@@ -27,4 +27,11 @@ public class LoginTests extends BaseCase {
         LoginTest loginTest = new LoginTest(appiumDriver, logger);
         loginTest.CheckLogin();
     }
+
+    @Test(priority = 4)
+    public void addInsurance() throws IOException, InterruptedException {
+        logger = extent.createTest("Check if insurance product is added or not");
+        LoginTest loginTest = new LoginTest(appiumDriver, logger);
+        loginTest.AddInsurance();
+    }
 }
