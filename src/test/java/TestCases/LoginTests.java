@@ -1,6 +1,7 @@
 package TestCases;
 
 import Pages.LoginTest;
+import net.sourceforge.tess4j.TesseractException;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -21,17 +22,17 @@ public class LoginTests extends BaseCase {
         loginTest.LoginValidation();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 2)
+    public void verifyToastMessage() throws IOException, InterruptedException, TesseractException {
+        logger = extent.createTest("Check if ");
+        LoginTest loginTest = new LoginTest(appiumDriver, logger);
+        loginTest.VerifyToastMessage();
+    }
+
+    @Test(priority = 4)
     public void checkLogin() throws IOException, InterruptedException {
         logger = extent.createTest("Check if admin is logged in");
         LoginTest loginTest = new LoginTest(appiumDriver, logger);
         loginTest.CheckLogin();
-    }
-
-    @Test(priority = 4)
-    public void addInsurance() throws IOException, InterruptedException {
-        logger = extent.createTest("Check if insurance product is added or not");
-        LoginTest loginTest = new LoginTest(appiumDriver, logger);
-        loginTest.AddInsurance();
     }
 }

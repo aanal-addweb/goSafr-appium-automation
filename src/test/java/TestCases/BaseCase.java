@@ -50,8 +50,8 @@ public class BaseCase extends ReportClass {
         }
     }
 
-    @AfterTest
-    public void teardown(){
-        appiumDriver.quit();
-    }
+//    @AfterTest
+//    public void teardown(){
+//        appiumDriver.quit();
+//    }
 }
