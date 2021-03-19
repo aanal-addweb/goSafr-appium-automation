@@ -1,6 +1,7 @@
 package Action;
 
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import io.appium.java_client.AppiumDriver;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
@@ -29,7 +30,7 @@ public class ReadToastMessage {
         this.test = test;
     }
 
-    public String readToastMessage() throws TesseractException {
+    public String readToastMessage(String toastvalue) throws TesseractException {
         String imgName = takeScreenShot();
         String result = null;
         File imageFile = new File(scrShotDirPath, imgName);
@@ -50,6 +51,15 @@ public class ReadToastMessage {
         // path
         result = instance.doOCR(imageFile);
         System.out.println(result);
+        if(result.contains(toastvalue)){
+            test.log(Status.INFO, "toast matches");
+            System.out.println("toast matches");
+        }
+        else
+        {
+            System.out.println("toast does not match");
+            test.log(Status.FAIL, "toast does not match");
+        }
         return result;
     }
 

@@ -1,8 +1,10 @@
 package Pages;
 
 import Action.ActionClass;
+import Action.ReadToastMessage;
 import com.aventstack.extentreports.ExtentTest;
 import io.appium.java_client.AppiumDriver;
+import net.sourceforge.tess4j.TesseractException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,7 +19,7 @@ public class InsuranceTest {
         this.appiumDriver = appiumDriver;
         this.extentTest = extentTest;
     }
-    public void AddInsurance() throws IOException, InterruptedException {
+    public void AddInsurance() throws IOException, InterruptedException, TesseractException {
         new WebDriverWait(appiumDriver, 60).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='INSURANCES']")));
         appiumDriver.findElement(By.xpath("//*[@text='INSURANCES']")).click();
         ActionClass actionClass = new ActionClass(appiumDriver, extentTest);
@@ -37,7 +39,9 @@ public class InsuranceTest {
         actionClass.screenCapture("AddInsurance_3");
         new WebDriverWait(appiumDriver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='Submit']")));
         appiumDriver.findElement(By.xpath("//*[@text='Submit']")).click();
-        Thread.sleep(5000);
-        actionClass.screenCapture("AddInsurance_4");
+        Thread.sleep(2000);
+        ReadToastMessage readToastMessage = new ReadToastMessage(appiumDriver, extentTest);
+        readToastMessage.takeScreenShot();
+        readToastMessage.readToastMessage("Insurance detail added successfully");
     }
 }

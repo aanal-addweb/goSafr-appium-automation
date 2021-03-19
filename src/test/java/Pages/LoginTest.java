@@ -1,24 +1,29 @@
 package Pages;
 
 import Action.ActionClass;
-//import Action.Tesseract;
 import Action.ReadToastMessage;
 import Action.VerificationClass;
 import com.aventstack.extentreports.ExtentTest;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import net.sourceforge.tess4j.TesseractException;
+import org.aspectj.weaver.ast.And;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class LoginTest {
     ExtentTest extentTest;
     AppiumDriver appiumDriver;
+    AndroidDriver driver;
 
     public LoginTest(AppiumDriver appiumDriver, ExtentTest extentTest){
         this.appiumDriver = appiumDriver;
         this.extentTest = extentTest;
+//        this.driver = driver;
     }
 
     public void CheckSignUpPage() throws IOException {
@@ -30,7 +35,6 @@ public class LoginTest {
         verificationClass.CompareString(bodyText, "SIGN UP WITH PHONE");
         ActionClass actionClass = new ActionClass(appiumDriver, extentTest);
         actionClass.screenCapture("Sign_Up_Page");
-
     }
 
     public void LoginValidation() throws IOException {
@@ -61,14 +65,44 @@ public class LoginTest {
         Thread.sleep(2000);
         ReadToastMessage readToastMessage = new ReadToastMessage(appiumDriver, extentTest);
         readToastMessage.takeScreenShot();
-        readToastMessage.readToastMessage();
+        readToastMessage.readToastMessage("Password did not confirm with policy");
+    }
+
+    public void ReadOTP() throws InterruptedException {
+        new WebDriverWait(appiumDriver, 40).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Phone']]]")));
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Phone']]]")).clear();
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Phone']]]")).sendKeys("8347225834");
+        new WebDriverWait(appiumDriver, 40).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")));
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")).clear();
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")).sendKeys("addweb123");
+        new WebDriverWait(appiumDriver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='Sign Up']")));
+        appiumDriver.findElement(By.xpath("//*[@text='Sign Up']")).click();
+        Thread.sleep(5000);
+        appiumDriver.executeScript("mobile: getNotifications");
+        Map<String, Object> res = (Map<String, Object>)appiumDriver.executeScript("mobile: getNotifications");
+        List<Map<String, Object>> notifications = (List<Map<String, Object>>)res.get("statusBarNotifications");
+        for (Map<String, Object> notification : notifications) {
+            Map<String, String> innerNotification = (Map<String, String>)notification.get("notification");
+            if (innerNotification.get("bigTitle") != null) {
+                System.out.println(innerNotification.get("bigTitle"));
+            } else {
+                System.out.println(innerNotification.get("title"));
+            }
+            if (innerNotification.get("bigText") != null) {
+                System.out.println(innerNotification.get("bigText"));
+            } else {
+                System.out.println(innerNotification.get("text"));
+            }
+        }
     }
 
     public void CheckLogin() throws IOException {
-        new WebDriverWait(appiumDriver, 20).until(ExpectedConditions.presenceOfElementLocated(By.xpath("((//*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup'] and (./preceding-sibling::* | ./following-sibling::*)[@class='android.view.ViewGroup']]]]]]]/*[@class='android.view.ViewGroup'])[2]/*[@class='android.widget.EditText'])[1]")));
-        appiumDriver.findElement(By.xpath("((//*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup'] and (./preceding-sibling::* | ./following-sibling::*)[@class='android.view.ViewGroup']]]]]]]/*[@class='android.view.ViewGroup'])[2]/*[@class='android.widget.EditText'])[1]")).sendKeys("9978123516");
-        new WebDriverWait(appiumDriver, 20).until(ExpectedConditions.presenceOfElementLocated(By.xpath("((//*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup'] and (./preceding-sibling::* | ./following-sibling::*)[@class='android.view.ViewGroup']]]]]]]/*[@class='android.view.ViewGroup'])[2]/*[@class='android.widget.EditText'])[2]")));
-        appiumDriver.findElement(By.xpath("((//*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup' and ./parent::*[@class='android.view.ViewGroup'] and (./preceding-sibling::* | ./following-sibling::*)[@class='android.view.ViewGroup']]]]]]]/*[@class='android.view.ViewGroup'])[2]/*[@class='android.widget.EditText'])[2]")).sendKeys("@1239998");
+        new WebDriverWait(appiumDriver, 40).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Phone']]]")));
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Phone']]]")).clear();
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Phone']]]")).sendKeys("9978123516");
+        new WebDriverWait(appiumDriver, 40).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")));
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")).clear();
+        appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")).sendKeys("@1239998");
         new WebDriverWait(appiumDriver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='Sign Up']")));
         appiumDriver.findElement(By.xpath("//*[@text='Sign Up']")).click();
         new WebDriverWait(appiumDriver, 60).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='MY JOURNEYS']")));
