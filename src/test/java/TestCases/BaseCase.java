@@ -27,7 +27,7 @@ public class BaseCase extends ReportClass {
             //desiredCapabilities.setCapability("udid", "372453d0");
             desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
             //desiredCapabilities.setCapability("platformName", "Android");
-            desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "10");
+            desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "11");
             //desiredCapabilities.setCapability("platformVersion", "10");
             desiredCapabilities.setCapability("appPackage", "com.gosafr");
 //            desiredCapabilities.setCapability("appPackage", "com.google.android.calculator");

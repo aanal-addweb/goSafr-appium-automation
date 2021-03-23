@@ -19,12 +19,14 @@ public class LoginTest {
     ExtentTest extentTest;
     AppiumDriver appiumDriver;
     AndroidDriver driver;
+//    public String noti = null;
 
     public LoginTest(AppiumDriver appiumDriver, ExtentTest extentTest){
         this.appiumDriver = appiumDriver;
         this.extentTest = extentTest;
 //        this.driver = driver;
     }
+
 
     public void CheckSignUpPage() throws IOException {
         new WebDriverWait(appiumDriver, 30).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='GET STARTED']")));
@@ -77,21 +79,45 @@ public class LoginTest {
         appiumDriver.findElement(By.xpath("//*[@class='android.widget.EditText' and (./preceding-sibling::* | ./following-sibling::*)[./*[@text='Select your new password']]]")).sendKeys("addweb123");
         new WebDriverWait(appiumDriver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@text='Sign Up']")));
         appiumDriver.findElement(By.xpath("//*[@text='Sign Up']")).click();
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         appiumDriver.executeScript("mobile: getNotifications");
         Map<String, Object> res = (Map<String, Object>)appiumDriver.executeScript("mobile: getNotifications");
         List<Map<String, Object>> notifications = (List<Map<String, Object>>)res.get("statusBarNotifications");
         for (Map<String, Object> notification : notifications) {
             Map<String, String> innerNotification = (Map<String, String>)notification.get("notification");
-            if (innerNotification.get("bigTitle") != null) {
-                System.out.println(innerNotification.get("bigTitle"));
-            } else {
-                System.out.println(innerNotification.get("title"));
-            }
+//            if (innerNotification.get("text") != null) {
+//                String noti = innerNotification.get("bigTitle");
+////                System.out.println(innerNotification.get("bigTitle"));
+//                System.out.println(noti);
+////                String[] sentence2 = noti.split("[\\s@&.?$+-]+");
+////                String result1= sentence2[6].trim();
+////                System.out.println("result: "+ result1);
+//            }
+//            else {
+////                System.out.println(innerNotification.get("title"));
+//                String noti1 = innerNotification.get("title");
+//                System.out.println(noti1);
+////                String[] sentence3 = noti1.split("[\\s@&.?$+-]+");
+////                String result2= sentence3[6].trim();
+////                System.out.println("result: "+ result2);
+//            }
             if (innerNotification.get("bigText") != null) {
-                System.out.println(innerNotification.get("bigText"));
-            } else {
-                System.out.println(innerNotification.get("text"));
+//                System.out.println(innerNotification.get("bigText"));
+                String messagetext = innerNotification.get("bigText");
+                System.out.println(messagetext);
+                String[] sentence1 = messagetext.split("[\\s@&.?$+-]+");
+                String otp= sentence1[5].trim();
+                System.out.println("otp: "+ otp);
+
+            }
+            else {
+//                System.out.println(innerNotification.get("text"));
+                String messagetext1 = innerNotification.get("text");
+                System.out.println(messagetext1);
+                String[] sentence2 = messagetext1.split("[\\s@&.?$+-]+");
+                System.out.println(sentence2[5]);
+                String otp1= sentence2[5].trim();
+                System.out.println("otp: "+ otp1);
             }
         }
     }

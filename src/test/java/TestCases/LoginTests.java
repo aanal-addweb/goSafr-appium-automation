@@ -40,10 +40,10 @@ public class LoginTests extends BaseCase {
         loginTest.ReadOTP();
     }
 
-//    @Test(priority = 5)
-//    public void checkLogin() throws IOException, InterruptedException {
-//        logger = extent.createTest("Check if the insurance is added successfully");
-//        LoginTest loginTest = new LoginTest(appiumDriver, logger);
-//        loginTest.CheckLogin();
-//    }
+    @Test(priority = 5)
+    public void checkLogin() throws IOException, InterruptedException {
+        logger = extent.createTest("Check if the insurance is added successfully");
+        LoginTest loginTest = new LoginTest(appiumDriver, logger);
+        loginTest.CheckLogin();
+    }
 }
